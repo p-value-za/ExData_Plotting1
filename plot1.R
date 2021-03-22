@@ -5,6 +5,10 @@
 #                       Retrieves the data set                                #
 ###############################################################################
 
+## Creates a function to download the data, if necessarry, 
+## and populates a data frame with the data from the required data
+
+get_data <- function() {
 file_name <- "household_power_consumption.txt"
 
 ## Download the file if not present in the working directory
@@ -37,6 +41,7 @@ if("chron" %in% rownames(installed.packages()) == FALSE) install("chron")
 library(chron)
 hpc_data$Date <- as.Date(hpc_data$Date, format = "%d/%m/%Y")
 hpc_data$Time <- times(hpc_data$Time)
+}
 
 ###############################################################################
 #               Constructs the plot                                           #
