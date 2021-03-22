@@ -24,7 +24,7 @@ unzip("household_power_consumption.zip")
 col_names <- names(read.table(file_name, header = TRUE, nrows = 5, sep = ";"))
 
 ## Creates a data frame of only the data for the required dates
-hpc_data <- read.table(file_name,
+df <- read.table(file_name,
                   header = FALSE, na.strings = "?", sep = ";",
                   skip = grep("1/2/2007", readLines(file_name)) - 1, 
                   # first row of date 1/2/2007 data skipped 
@@ -39,9 +39,15 @@ hpc_data <- read.table(file_name,
 ## Converts the Date and Time variables to the correct R classes
 if("chron" %in% rownames(installed.packages()) == FALSE) install("chron")
 library(chron)
-hpc_data$Date <- as.Date(hpc_data$Date, format = "%d/%m/%Y")
-hpc_data$Time <- times(hpc_data$Time)
+
+## Creates combined date_time variable
+Date_Time <- character(0)
+Date_Time <- paste(df[, 1], df[, 2])
+Date_Time <- as.POSIXlt(Date_Time, format = "%d/%m/%Y %H:%M:%S")
+cbind(Date_Time, df)
 }
+
+hpc_data <- get_data()
 
 ###############################################################################
 #               Constructs the plot                                           #
